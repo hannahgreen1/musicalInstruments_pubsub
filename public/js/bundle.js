@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const InstrumentFamilies = __webpack_require__(/*! ./models/instrument_families.js */ \"./src/models/instrument_families.js\");\nconst SelectView = __webpack_require__(/*! ./views/select_view.js */ \"./src/views/select_view.js\");\nconst ResultInstrument = __webpack_require__(/*! ./views/result_view.js */ \"./src/views/result_view.js\");\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('JavaScript Loaded');\n\n  const selectElement = document.querySelector(\"#instrument-families\");\n  const instrumentDropdown = new SelectView(selectElement);\n  instrumentDropdown.bindEvents();\n\n  const instrumentsDataSource = new InstrumentFamilies();\n  instrumentsDataSource.bindEvents();\n\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const InstrumentFamilies = __webpack_require__(/*! ./models/instrument_families.js */ \"./src/models/instrument_families.js\");\nconst SelectView = __webpack_require__(/*! ./views/select_view.js */ \"./src/views/select_view.js\");\nconst ResultInstrument = __webpack_require__(/*! ./views/result_view.js */ \"./src/views/result_view.js\");\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('JavaScript Loaded');\n\n  const selectElement = document.querySelector(\"#instrument-families\");\n  const instrumentDropdown = new SelectView(selectElement);\n  instrumentDropdown.bindEvents();\n\n  const infoDiv = document.querySelector('#instrument-info')\n  const resultInstrument = new ResultInstrument(infoDiv);\n  resultInstrument.bindEvents();\n\n  const instrumentsDataSource = new InstrumentFamilies();\n  instrumentsDataSource.bindEvents();\n\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -126,7 +126,7 @@ eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/he
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\n\nconst ResultInstrument = function (){\n};\n\n\nmodule.exports = ResultInstrument;\n\n\n//# sourceURL=webpack:///./src/views/result_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\n\nconst ResultInstrument = function (container){\n  this.container = container;\n};\n\nResultInstrument.prototype.bindEvents = function(){\n  PubSub.subscribe('Instrument:selected-instrument-ready', (evt) => {\n    const instrument = evt.detail;\n    this.generate(instrument);\n    console.log(evt.detail);\n    console.log(evt);\n  });\n};\n\nResultInstrument.prototype.generate = function(instrument){\n  console.log(instrument);\n  const infoParagraph = document.createElement('p');\n  infoParagraph.textContent = `Type: ${instrument.name}, Description: ${instrument.description}, Other Instruments: ${instrument.instruments}`;\n  this.container.appendChild(infoParagraph);\n};\nmodule.exports = ResultInstrument;\n\n\n//# sourceURL=webpack:///./src/views/result_view.js?");
 
 /***/ }),
 
