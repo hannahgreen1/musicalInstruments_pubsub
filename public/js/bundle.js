@@ -91,9 +91,53 @@
   !*** ./src/app.js ***!
   \********************/
 /*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const InstrumentFamilies = __webpack_require__(/*! ./models/instrument_families.js */ \"./src/models/instrument_families.js\");\nconst SelectView = __webpack_require__(/*! ./views/select_view.js */ \"./src/views/select_view.js\");\nconst ResultView = __webpack_require__(/*! ./views/result_view.js */ \"./src/views/result_view.js\");\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('JavaScript Loaded');\n  const selectElement = document.querySelector('#instrument-families');\n    const instrumentDropdown = new SelectView(selectElement);\n    instrumentDropdown.bindEvents();\n\n    const infoDiv = document.querySelector('div#animal-info')\n    const animalInfoDisplay = new AnimalInfoView(infoDiv);\n    animalInfoDisplay.bindEvents();\n\n    const animalsDataSource = new Animals();\n    animalsDataSource.bindEvents();\n\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+
+/***/ }),
+
+/***/ "./src/helpers/pub_sub.js":
+/*!********************************!*\
+  !*** ./src/helpers/pub_sub.js ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("document.addEventListener('DOMContentLoaded', () => {\n  console.log('JavaScript Loaded');\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const PubSub = {\n\tpublish: function(channel, payload){\n\t\tconst event = new CustomEvent(channel, {\n\t\t\tdetail: payload\n\t\t});\n\t\tdocument.dispatchEvent(event);\n\t},\n\n\tsubscribe: function(channel, callback){\n\t\tdocument.addEventListener(channel, callback);\n\t}\n}\n\nmodule.exports = PubSub;\n\n\n//# sourceURL=webpack:///./src/helpers/pub_sub.js?");
+
+/***/ }),
+
+/***/ "./src/models/instrument_families.js":
+/*!*******************************************!*\
+  !*** ./src/models/instrument_families.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const InstrumentFamilies = function() {\n  this.instrumentFamilies = [\n    {\n      name: 'Brass',\n      description: 'A brass instrument is a musical instrument that produces sound by sympathetic vibration of air in a tubular resonator in sympathy with the vibration of the player\\'s lips',\n      instruments: ['trumpet', 'trombone', 'horn', 'tuba', 'bugle']\n    },\n    {\n      name: 'Strings',\n      description: 'String instruments, stringed instruments, or chordophones are musical instruments that produce sound from vibrating strings when the performer plays or sounds the strings in some manner.',\n      instruments: ['violin', 'double bass', 'guitar', 'sitar', 'hurdy-gurdy']\n    },\n    {\n      name: 'Wind',\n      description: 'A wind instrument is a musical instrument that contains some type of resonator (usually a tube), in which a column of air is set into vibration by the player blowing into (or over) a mouthpiece set at or near the end of the resonator.',\n      instruments: ['flute', 'clarinet', 'bassoon', 'bagpipes', 'oboe']\n    },\n    {\n      name: 'Percussion',\n      description: 'A percussion instrument is a musical instrument that is sounded by being struck or scraped by a beater (including attached or enclosed beaters or rattles); struck, scraped or rubbed by hand; or struck against another similar instrument.',\n      instruments: ['timpani', 'snare drum', 'bass drum', 'cymbals', 'triangle', 'tambourine']\n    },\n    {\n      name: 'Keyboard',\n      description: 'A keyboard instrument is a musical instrument played using a keyboard, a row of levers which are pressed by the fingers.',\n      instruments: ['piano', 'organ', 'electronic keyboard', 'synthesizer']\n    }\n  ];\n};\n\nmodule.exports = InstrumentFamilies;\n\n\n//# sourceURL=webpack:///./src/models/instrument_families.js?");
+
+/***/ }),
+
+/***/ "./src/views/result_view.js":
+/*!**********************************!*\
+  !*** ./src/views/result_view.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\n\nconst ResultInstrument = function (){\n};\n\n\nmodule.exports = ResultInstrument;\n\n\n//# sourceURL=webpack:///./src/views/result_view.js?");
+
+/***/ }),
+
+/***/ "./src/views/select_view.js":
+/*!**********************************!*\
+  !*** ./src/views/select_view.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst SelectInstrument = function (element){\n  this.element = element;\n};\n\n\nSelectView.prototype.bindEvents = function(){\n  PubSub.subscribe('Instruments:all-instruments-ready', (evt) => {\n    const allInstruments = evt.detail;\n    this.populate(allInstruments);\n  });\n\n  this.element.addEventListener('change', (evt) => {\n    const selectedIndex = evt.target.value;\n    PubSub.publish('SelectView:change', selectedIndex);\n  });\n};\n\nSelectView.prototype.populate = function(instrumentData){\n  animalsData.forEach((instrument, index) => {\n    const option = document.createElement('option');\n    option.textContent = instrument.name;\n    option.value = index;\n    this.element.appendChild(option);\n  })\n}\n\nmodule.exports = SelectInstrument;\n\n\n//# sourceURL=webpack:///./src/views/select_view.js?");
 
 /***/ })
 
